@@ -7,3 +7,7 @@
 ## 支持中间件代理
 
 - 提供本地接口mock
+
+- Express中 res.json 和res.end 及res.send()
+
+https://blog.csdn.net/m0_37263637/article/details/79753342
