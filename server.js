@@ -10,6 +10,9 @@ var urlencodedParser = bodyParser.urlencoded({
   extended: false
 });
 
+
+// bodyParser.json() 使用json解析传来的参数
+
 app.use(urlencodedParser);
 // Multer在解析完请求体后，会向Request对象中添加一个body对象和一个file或files对象（上传多个文件时使用files对象 ）。
 // 其中，body对象中包含所提交表单中的文本字段（如果有），而file(或files)对象中包含通过表单上传的文件。 diskStorage方法
@@ -33,7 +36,7 @@ var upload = multer({
 // 配置跨域 拦截所有接口
 app.all("*", function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With,Authorization");
+  res.header("Access-Control-Allow-Headers", "Content-type;X-Requested-With,Authorization");
   res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
   res.header("X-Powered-By", " 3.2.1");
   res.header("Content-Type", "application/json;charset=utf-8");
@@ -45,7 +48,10 @@ app.all("*", function(req, res, next) {
   if (req.method === "OPTIONS") {
     next();
   } else {
-    if (req.url === "/auth" && req.method === "POST") {
+    if (
+      (req.url === "/auth" && req.method === "POST") ||
+      req.url.indexOf("/proxy") > -1
+    ) {
       next();
     } else {
       const authorization = req.headers.authorization;
